@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://129.28.54.155:3306/seckill?serverTimezone=Hongkong
+    type: com.alibaba.druid.pool.DruidDataSource
+    filter: stat,wall,log4j
+#    schema:
+#      - classpath:sql/miaosha.sql
+#    initialization-mode: always
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.group9.seckill.entity
+

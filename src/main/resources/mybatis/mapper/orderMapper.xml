@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group9.seckill.dao.OrderDao">
+    <resultMap id="selectOrderMap" type="OrderInfo">
+        <id property="order_id" column="order_id"></id>
+        <result property="order_no" column="order_no"></result>
+        <result property="create_time" column="create_time"></result>
+        <result property="pay_time" column="pay_time"></result>
+        <result property="buy_count" column="buy_count"></result>
+        <result property="order_pay_no" column="order_pay_no"></result>
+        <association property="miaoShaGoods" javaType="MiaoShaGoods" >
+            <id property="miaoShaGoodsId" column="goods_id"></id>
+            <result property="miaoShaPrice" column="miaosha_price"></result>
+            <result property="miaoShaStock" column="miaosha_stock"></result>
+            <result property="beginTime" column="begin_time"></result>
+            <result property="endTime" column="end_time"></result>
+            <association property="goods" javaType="Goods">
+                <id property="goodsId" column="goods_id"></id>
+                <result property="goodsName" column="goods_name"></result>
+                <result property="goodsPrice" column="goods_price"></result>
+                <result property="goodsDesc" column="goods_desc"></result>
+                <result property="goodsStock" column="goods_stock"></result>
+                <result property="goodsImg" column="goods_img"></result>
+            </association>
+        </association>
+        <association property="address" javaType="Address">
+            <id property="address_id" column="address_id"></id>
+            <result property="reciver_name" column="reciver_name"></result>
+            <result property="reciver_phone" column="reciver_phone"></result>
+            <result property="reciver_address" column="reciver_address"></result>
+            <result property="post_no" column="post_no"></result>
+            <result property="user_id" column="user_id"></result>
+        </association>
+        <association property="userInfo" javaType="UserInfo">
+            <id column="user_id" property="userId"></id>
+            <result column="user_name" property="userName"></result>
+            <result column="user_pwd" property="userPwd"></result>
+            <result column="user_email" property="userEmail"></result>
+            <result column="regist_time" property="registTime"></result>
+            <result column="last_login_time" property="lastLoginTime"></result>
+        </association>
+    </resultMap>
+    <insert id="insertOrder" parameterType="OrderInfo">
+        <!--    insert into orderinfo(order_no,address_id,miaoshagoods_id,user_id,create_time,buy_count) VALUES('111',1,3,1,now(),1)-->
+        insert into orderinfo(order_no,address_id,goods_id,user_id,create_time,buy_count)
+        VALUES(#{order_no},#{address.address_id},#{miaoShaGoods.miaoShaGoodsId},#{userInfo.userId},now(),1)
+    </insert>
+    <update id="updateOrder" parameterType="OrderInfo">
+        update orderinfo set address_id=#{address.address_id},pay_time=now(),order_pay_no=#{order_pay_no} where order_no=#{order_no}
+    </update>
+    <select id="selectOrder" parameterType="UserInfo" resultMap="selectOrderMap">
+        select * from orderinfo  where user_id=#{userId}
+    </select>
+</mapper>

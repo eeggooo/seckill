@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group9.seckill.dao.AddressDao">
+    <resultMap id="selectAddressByUserIdMap" type="Address">
+        <id property="address_id" column="address_id"></id>
+        <result property="reciver_name" column="reciver_name"></result>
+        <result property="reciver_phone" column="reciver_phone"></result>
+        <result property="reciver_address" column="reciver_address"></result>
+        <result property="post_no" column="post_no"></result>
+        <result property="user_id" column="user_id"></result>
+
+    </resultMap>
+    <select id="selectAddressByUserId"  resultMap="selectAddressByUserIdMap">
+        select * from address where user_id=#{userId}
+    </select>
+    <insert id="insertAddress" parameterType="Address">
+        insert into address(reciver_name,reciver_phone,reciver_address,post_no,user_id)
+        values (#{reciver_name},#{reciver_phone},#{reciver_address},#{post_no},#{user_id});
+    </insert>
+    <select id="selectAddressByAddressId" parameterType="int" resultMap="selectAddressByUserIdMap">
+        select * from address where address_id=#{addressId}
+    </select>
+</mapper>

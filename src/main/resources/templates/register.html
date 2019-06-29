@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <link>
+    <title>注册</title>
+</head>
+<body>
+
+<form id="registerForm" class="form-horizontal" action="/user/register" method="post" th:align="center">
+    <img hspace="100" vspace="100" class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}"
+         src="../static/asserts/img/bootstrap-solid.svg" alt="" width="150" height="150">
+    <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="username" placeholder="Name" name="userName" required>
+            <label  id="checkUsername" style="float: left" >  </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-8">
+            <input type="password" class="form-control" id="password" placeholder="Password" name="userPwd" required>
+            <label  id="checkUserPwd" style="float: left"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">RePassword</label>
+        <div class="col-sm-8">
+            <input type="password" class="form-control" id="repassword" placeholder="rePassword" required>
+            <label id="checkRepassword" style="float: left"></label>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label for="userEmail" class="col-sm-2 control-label">email</label>
+        <div class="col-sm-8">
+            <input type="email" class="form-control" id="userEmail" placeholder="you@example.com" name="userEmail" required>
+            <label id="checkUserEmail" style="float: left"></label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> Remember me
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+            <button type="submit" class="btn btn-default">注册</button>
+        </div>
+    </div>
+</form>
+<script  th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+<script th:src="@{/asserts/js/md5.js}"></script>
+<script>
+    $(function () {
+        $("#registerForm").submit(function () {
+            var inputTag=$("#password");
+            var str=salt+inputTag.val()+salt;
+            var newPwd=$.md5(str);
+            inputTag.val(newPwd);
+        })
+    })
+</script>
+<!--验证输入框JS-->
+<script>
+    $(function () {
+        //用户名输入框验证
+        $("#username").blur(function () {
+            var username = $(this).val();
+            if(username == '')
+            {
+                $("#checkUsername").html("请输入注册用户名").css("color","red");
+            }
+            else {
+                $.ajax({
+                    url: "/user/check_username",
+                    data: {UserName: username},
+                    type: "post",
+                    success: function (result) {
+                        if (result) {
+                            $("#checkUsername").html("用户名已经被注册").css("color","red");
+                        } else {
+                            $("#checkUsername").html("用户名现在可用").css("color","green");
+                        }
+                    }
+                })
+            }
+        }).focus(function () {
+            $("#checkUsername").html("");
+        })
+        //密码输入框验证
+        $("#password").blur(function () {
+            var password=$(this).val();
+            if(password==''){
+                $("#checkUserPwd").html("不输密码不安全").css("color","red");
+            }
+        }).focus(function () {
+            $("#checkUserPwd").html("");
+        })
+        //再次密码输入框验证
+        $("#repassword").blur(function () {
+            var password=$("#password").val();
+            var repassword=$(this).val();
+            if(password!=repassword){
+                $("#checkRepassword").html("密码似乎不一致").css("color","red");
+            }
+        }).focus(function () {
+            $("#checkRepassword").html("");
+        })
+    })
+</script>
+</body>
+</html>

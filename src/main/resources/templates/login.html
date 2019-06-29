@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Bootstrap core CSS -->
+    <link href="asserts/css/fuck.css" th:href="@{/asserts/css/fuck.css}" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>登陆</title>
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="asserts/css/dick.css" th:href="@{/asserts/css/dick.css}" rel="stylesheet">
+</head>
+<body class="text-center">
+<form class="form-signin" th:action="@{/user/login}" method="post" id="loginForm">
+
+    <img class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}" src="../static/asserts/img/bootstrap-solid.svg"
+         alt="" width="80" height="80">
+    <h1 class="h3 mb-3 font-weight-normal">登陆后秒杀</h1>
+
+    <input type="text" name="userName" id="username" class="form-control" placeholder="用户名" required autofocus>
+    <label id="checkUsername" style="float: left;color: red">   </label>
+    <input type="password" name="userPwd" id="password" class="form-control" placeholder="密码" required>
+    <label id="checkPassword" th:text="${errorMsg}" style="color: red"> </label>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button style="float: left; height:40px;width: 120px " class="btn btn-primary" type="submit" id="loginBtn" >登陆</button>
+    <a href="/register" style="float: right; height:40px;width: 120px " class="btn btn-primary">注册</a>
+</form>
+<script  th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+<script th:src="@{asserts/js/md5.js}"></script>
+<script>
+    $(function () {
+        $("#loginBtn").click(function () {
+            var username;
+            var p=$("#password");
+            var str=salt+p.val()+salt;
+            var newPwd=$.md5(str);
+            p.val(newPwd);
+        })
+    })
+
+
+    $(document).ready(function () {
+        $("#loginBtn").click(function () {
+
+        })
+    })
+</script>
+
+</body>
+</html>
